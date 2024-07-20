@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { Post as BlogPost } from './post.entity';
@@ -33,7 +34,7 @@ export class PostController {
   @ApiOperation({ summary: 'Get post by id' })
   @ApiResponse({ status: 200, description: 'Return the post.', type: BlogPost })
   @ApiResponse({ status: 404, description: 'Post not found.' })
-  findOne(@Param('id') id: number): BlogPost {
+  findOne(@Param('id', ParseIntPipe) id: number): BlogPost {
     return this.postsService.findOne(id);
   }
 
@@ -59,7 +60,7 @@ export class PostController {
   @ApiResponse({ status: 404, description: 'Post not found.' })
   @ApiResponse({ status: 400, description: 'Invalid input.' })
   update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
   ): BlogPost {
     return this.postsService.update(id, updatePostDto);
@@ -72,7 +73,7 @@ export class PostController {
     description: 'The post has been successfully deleted.',
   })
   @ApiResponse({ status: 404, description: 'Post not found.' })
-  remove(@Param('id') id: number): void {
+  remove(@Param('id', ParseIntPipe) id: number): void {
     this.postsService.remove(id);
   }
 }

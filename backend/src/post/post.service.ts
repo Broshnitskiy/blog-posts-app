@@ -2,11 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Post } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { defaultPosts } from './mockData';
 
 @Injectable()
 export class PostService {
-  private posts: Post[] = [];
-  private idCounter = 1;
+  private posts: Post[] = defaultPosts;
+  private idCounter = 3;
 
   findAll(): Post[] {
     return this.posts;
