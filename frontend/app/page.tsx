@@ -27,7 +27,7 @@ export default function Home() {
           Post List
         </Typography>
 
-        <Box textAlign={"center"}>
+        <Box textAlign={"center"} sx={{ mb: 2 }}>
           <Button variant="contained" color="primary" onClick={handleOpen}>
             Create New Post
           </Button>

@@ -7,7 +7,7 @@ import { defaultPosts } from './mockData';
 @Injectable()
 export class PostService {
   private posts: Post[] = defaultPosts;
-  private idCounter = 3;
+  private idCounter = 4;
 
   findAll(): Post[] {
     return this.posts;

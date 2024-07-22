@@ -1,17 +1,11 @@
 import { Post } from "@/types";
 import { getInitials } from "@/utils/getInitials";
 import { getRandomColor } from "@/utils/getRandomColor";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
+
 import { useRouter } from "next/navigation";
 import { FC } from "react";
+import CardBtns from "./CardBtns";
 
 interface PostCardProps {
   post: Post;
@@ -38,9 +32,18 @@ const PostCard: FC<PostCardProps> = ({
         "&:hover": {
           boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
         },
+        height: "100%",
       }}
     >
-      <CardContent>
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100%",
+          gap: "14px",
+        }}
+      >
         <Typography variant="h5" component="h2" gutterBottom>
           <span style={{ marginRight: "10px" }}>#{index}</span>
           {title}
@@ -60,33 +63,17 @@ const PostCard: FC<PostCardProps> = ({
         <Typography
           variant="subtitle2"
           color="text.secondary"
-          sx={{ mt: 2, mb: 2 }}
+          sx={{ mt: "auto", mb: 2 }}
         >
           {new Date(createdAt).toLocaleDateString()}
         </Typography>
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<DeleteIcon />}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(post);
-            }}
-          >
-            Delete
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEdit(post);
-            }}
-          >
-            Edit
-          </Button>
+        <Box>
+          <CardBtns
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            post={post}
+          />
         </Box>
       </CardContent>
     </Card>

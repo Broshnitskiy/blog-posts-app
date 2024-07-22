@@ -1,7 +1,7 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
-
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import InputErrorMessage from "./InputErrorMessge";
 import { PostDto } from "@/lib/api";
 import toast from "react-hot-toast";
@@ -64,7 +64,9 @@ const Form: FC<FormProps> = ({
         if (Object.keys(updateDto).length > 0) {
           await updatePost(chosenPost.id, updateDto);
         } else {
-          toast("You didn't change anything!");
+          toast("You didn't change anything!", {
+            icon: <WarningAmberIcon />,
+          });
           return;
         }
       }

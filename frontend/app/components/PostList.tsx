@@ -88,8 +88,14 @@ const PostList = () => {
         <Box textAlign={"center"}>
           <h2>Are you sure?</h2>
 
-          <Button onClick={handleDeleteClose}>Cencel</Button>
-          <Button onClick={onDeletePost}>Yes</Button>
+          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Button variant="outlined" onClick={handleDeleteClose}>
+              Cancel
+            </Button>
+            <Button variant="outlined" onClick={onDeletePost}>
+              Yes
+            </Button>
+          </Box>
         </Box>
       </CustomModal>
     </Box>
