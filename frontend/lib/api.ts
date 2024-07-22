@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:3000";
 
-interface PostDto {
+export interface PostDto {
   title: string;
   content: string;
   author: string;

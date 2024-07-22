@@ -4,7 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import CloseIcon from "@mui/icons-material/Close";
 import InputErrorMessage from "./InputErrorMessge";
 import { mutate } from "swr";
-import { createPost } from "@/lib/api";
+import { PostDto } from "@/lib/api";
+import toast from "react-hot-toast";
 
 interface FormValues {
   title: string;
@@ -15,9 +16,10 @@ interface FormValues {
 interface FormProps {
   handleClose: () => void;
   title: string;
+  sendData: (data: PostDto) => Promise<void>;
 }
 
-const Form: FC<FormProps> = ({ handleClose, title }) => {
+const Form: FC<FormProps> = ({ handleClose, title, sendData }) => {
   const {
     handleSubmit,
     control,
@@ -26,12 +28,14 @@ const Form: FC<FormProps> = ({ handleClose, title }) => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      await createPost(data);
+      await sendData(data);
       mutate("/post");
 
+      toast.success("Success");
       handleClose();
     } catch (err) {
       console.error(err);
+      toast.error("Something wrong! Please, try later.");
     }
   };
 
@@ -82,6 +86,7 @@ const Form: FC<FormProps> = ({ handleClose, title }) => {
             />
           )}
         />
+
         <Controller
           name="author"
           control={control}
@@ -105,6 +110,7 @@ const Form: FC<FormProps> = ({ handleClose, title }) => {
             />
           )}
         />
+
         <Controller
           name="content"
           control={control}
@@ -130,6 +136,7 @@ const Form: FC<FormProps> = ({ handleClose, title }) => {
             />
           )}
         />
+
         <Button type="submit" variant="contained" color="primary" fullWidth>
           Submit
         </Button>

@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import PostList from "./components/PostList";
-import { useSWRConfig } from "swr";
 import { Box, Button, Container, Typography } from "@mui/material";
 import CustomModal from "./components/CustomModal";
 import Form from "./components/Form";
+import { createPost } from "@/lib/api";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,11 @@ export default function Home() {
         </Box>
 
         <CustomModal open={open} handleClose={handleClose}>
-          <Form title="Create New Post" handleClose={handleClose} />
+          <Form
+            title="Create New Post"
+            handleClose={handleClose}
+            sendData={createPost}
+          />
         </CustomModal>
 
         <PostList />
