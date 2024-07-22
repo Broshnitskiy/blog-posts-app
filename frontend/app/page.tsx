@@ -8,11 +8,11 @@ import Form from "./components/Form";
 import { createPost } from "@/lib/api";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => setOpenModal(true);
   const handleClose = () => {
-    setOpen(false);
+    setOpenModal(false);
   };
 
   return (
@@ -33,11 +33,11 @@ export default function Home() {
           </Button>
         </Box>
 
-        <CustomModal open={open} handleClose={handleClose}>
+        <CustomModal open={openModal} handleClose={handleClose}>
           <Form
             title="Create New Post"
             handleClose={handleClose}
-            sendData={createPost}
+            createPost={createPost}
           />
         </CustomModal>
 

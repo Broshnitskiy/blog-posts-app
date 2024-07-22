@@ -1,11 +1,11 @@
-import { Button, IconButton, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
-import CloseIcon from "@mui/icons-material/Close";
+
 import InputErrorMessage from "./InputErrorMessge";
-import { mutate } from "swr";
 import { PostDto } from "@/lib/api";
 import toast from "react-hot-toast";
+import { Post } from "@/types";
 
 interface FormValues {
   title: string;
@@ -16,20 +16,58 @@ interface FormValues {
 interface FormProps {
   handleClose: () => void;
   title: string;
-  sendData: (data: PostDto) => Promise<void>;
+  createPost?: (data: PostDto) => Promise<void>;
+  updatePost?: (id: number, data: Partial<PostDto>) => Promise<void>;
+  chosenPost?: Post | null;
 }
 
-const Form: FC<FormProps> = ({ handleClose, title, sendData }) => {
+const Form: FC<FormProps> = ({
+  handleClose,
+  title,
+  createPost,
+  updatePost,
+  chosenPost,
+}) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      title: chosenPost ? chosenPost.title : "",
+      author: chosenPost ? chosenPost.author : "",
+      content: chosenPost ? chosenPost.content : "",
+    },
+  });
 
   const onSubmit = async (data: FormValues) => {
+    const { title, author, content } = data;
+
     try {
-      await sendData(data);
-      mutate("/post");
+      if (createPost) {
+        const dto: PostDto = {
+          title: title.trim(),
+          author: author.trim(),
+          content: content.trim(),
+        };
+
+        await createPost(dto);
+      }
+
+      if (updatePost && chosenPost) {
+        const updateDto: Partial<PostDto> = {};
+
+        if (chosenPost.author !== author) updateDto.author = author.trim();
+        if (chosenPost.title !== title) updateDto.title = title.trim();
+        if (chosenPost.content !== content) updateDto.content = content.trim();
+
+        if (Object.keys(updateDto).length > 0) {
+          await updatePost(chosenPost.id, updateDto);
+        } else {
+          toast("You didn't change anything!");
+          return;
+        }
+      }
 
       toast.success("Success");
       handleClose();
@@ -44,19 +82,6 @@ const Form: FC<FormProps> = ({ handleClose, title, sendData }) => {
       <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
         {title}
       </Typography>
-
-      <IconButton
-        aria-label="close"
-        onClick={handleClose}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
 
       <form
         onSubmit={handleSubmit(onSubmit)}

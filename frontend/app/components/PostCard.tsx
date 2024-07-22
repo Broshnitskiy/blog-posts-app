@@ -1,16 +1,31 @@
 import { Post } from "@/types";
 import { getInitials } from "@/utils/getInitials";
 import { getRandomColor } from "@/utils/getRandomColor";
-import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 
 interface PostCardProps {
   post: Post;
   index: number;
+  handleEdit: (post: Post) => void;
+  handleDelete: (post: Post) => void;
 }
 
-const PostCard: FC<PostCardProps> = ({ post, index }) => {
+const PostCard: FC<PostCardProps> = ({
+  post,
+  index,
+  handleDelete,
+  handleEdit,
+}) => {
   const router = useRouter();
   const { author, id, content, createdAt, title } = post;
 
@@ -19,9 +34,8 @@ const PostCard: FC<PostCardProps> = ({ post, index }) => {
       onClick={() => router.push(`/${id}`)}
       sx={{
         cursor: "pointer",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        transition: "box-shadow 0.3s ease",
         "&:hover": {
-          transform: "scale(1.005)",
           boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
         },
       }}
@@ -46,10 +60,34 @@ const PostCard: FC<PostCardProps> = ({ post, index }) => {
         <Typography
           variant="subtitle2"
           color="text.secondary"
-          sx={{ marginTop: 2 }}
+          sx={{ mt: 2, mb: 2 }}
         >
           {new Date(createdAt).toLocaleDateString()}
         </Typography>
+
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(post);
+            }}
+          >
+            Delete
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEdit(post);
+            }}
+          >
+            Edit
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );

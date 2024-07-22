@@ -1,5 +1,6 @@
-import { Box, Modal } from "@mui/material";
+import { Box, IconButton, Modal } from "@mui/material";
 import { FC, ReactNode } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface CustomModalProps {
   open: boolean;
@@ -31,7 +32,22 @@ const CustomModal: FC<CustomModalProps> = ({ open, handleClose, children }) => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box sx={modalStyle}>{children}</Box>
+      <Box sx={modalStyle}>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        {children}
+      </Box>
     </Modal>
   );
 };

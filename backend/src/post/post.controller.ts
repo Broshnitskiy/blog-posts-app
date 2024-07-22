@@ -73,7 +73,7 @@ export class PostController {
     description: 'The post has been successfully deleted.',
   })
   @ApiResponse({ status: 404, description: 'Post not found.' })
-  remove(@Param('id', ParseIntPipe) id: number): void {
-    this.postsService.remove(id);
+  remove(@Param('id', ParseIntPipe) id: number): { id: number } {
+    return this.postsService.remove(id);
   }
 }

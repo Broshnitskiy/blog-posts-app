@@ -40,7 +40,7 @@ export class PostService {
     return post;
   }
 
-  remove(id: number): void {
+  remove(id: number): { id: number } {
     const index = this.posts.findIndex((p) => p.id === id);
 
     if (index === -1) {
@@ -48,5 +48,7 @@ export class PostService {
     }
 
     this.posts.splice(index, 1);
+
+    return { id };
   }
 }
